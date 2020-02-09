@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const searchInputElement  = document.querySelector('#search-input');
     const searchButtonElement = document.querySelector('#search-button');
-    
+    const searchResultBoxElement = document.getElementById('search-result-box');
+
+    let searchResultDataLength = 0;
+
     /* 
         검색창에서 유저가 키를 눌렀을때 발생하는 이벤트
     */
@@ -31,24 +34,49 @@ document.addEventListener("DOMContentLoaded", function() {
         
         xhr.addEventListener('load', function() {
             let resultData = JSON.parse(xhr.responseText);
-
-            if(resultData.signal !== "success") {
+            
+            if(resultData.signal !== "success" || resultData.detail.data.result.length === 0) {
+                searchResultBoxElement.style.display = "none";
                 return;
+            }
+            
+            searchResultBoxElement.style.display = "block";
+
+            const searchResultBoxUlElement = document.querySelector('#search-result-box ul');
+
+            while(searchResultBoxUlElement.childElementCount !== 0) {
+                searchResultBoxUlElement.removeChild(searchResultBoxUlElement.firstChild);
             }
 
             if(resultData.detail.data.result.length !== 0) {
+                searchResultDataLength = resultData.detail.data.result.length;
                 Object.keys(resultData.detail.data.result).forEach(function(key) {
-                    console.log("data key: " + key);
                     if(key !== 'length') {
-                        let liElement = document.createElement("li");        
+                        let liElement = document.createElement("li");
+                        liElement.innerText = key;
+                      
+                        searchResultBoxUlElement.append(liElement);
                     }
                 });
-                
-                
             }
 
             console.log(resultData);
         });
         
     }
+
+    document.querySelector("body").addEventListener('click', function(e) {
+        /* body를 클릭했을때 만 작동 */
+        if(e.toElement === document.querySelector("body")) {
+            if(searchResultBoxElement.style.display === 'block') {
+                searchResultBoxElement.style.display = 'none';
+            }
+        }
+    });
+
+    searchInputElement.addEventListener('click', function(e) {
+        if(searchResultDataLength !== 0) {
+            searchResultBoxElement.style.display = 'block';
+        }
+    })
 });

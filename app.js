@@ -69,21 +69,22 @@ app.post("/search", function(req, res) {
 
         sendData["length"] = 0;
         Object.keys(dummyData).forEach(function(key) {
-            console.log(key + ": " + dummyData[key]);
+            // console.log(key + ": " + dummyData[key]);
             
             if((key.indexOf(searchData) != dontFoundData) && (key.charAt(0) == searchData.charAt(0))) {
                 sendData[key] = dummyData[key];
                 sendData["length"] += 1;
-                console.log(sendData["length"]);
             }
         });
 
         responseData['detail']['data']['result'] = sendData;
 
-        res.json(responseData);
     } else {
         responseData['signal'] = 'fail';
         responseData['detail']['err'] = 'value is null';
     }
+
+    console.log(responseData);
+    res.json(responseData);
     // res.render("index.ejs", {"data": responseData});
 });
