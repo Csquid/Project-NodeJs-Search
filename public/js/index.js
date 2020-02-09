@@ -30,13 +30,24 @@ document.addEventListener("DOMContentLoaded", function() {
         xhr.send(data);
         
         xhr.addEventListener('load', function() {
-            let result = JSON.parse(xhr.responseText);
+            let resultData = JSON.parse(xhr.responseText);
 
-            if(result.signal !== "success") {
+            if(resultData.signal !== "success") {
                 return;
-            } 
+            }
 
-            console.log(result);
+            if(resultData.detail.data.result.length !== 0) {
+                Object.keys(resultData.detail.data.result).forEach(function(key) {
+                    console.log("data key: " + key);
+                    if(key !== 'length') {
+                        let liElement = document.createElement("li");        
+                    }
+                });
+                
+                
+            }
+
+            console.log(resultData);
         });
         
     }

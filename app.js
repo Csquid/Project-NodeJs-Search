@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     // res.sendFile(__dirname + "/public/index.html");
-    res.render("index.ejs", {data: 'email'});
+    res.render("index", {"data": {}});
 });
 
 app.post("/search", function(req, res) {
@@ -54,8 +54,6 @@ app.post("/search", function(req, res) {
 
     const dontFoundData = -1;
     let sendData = {};
-    // console.log(req.body);
-
     
     let responseData = {
         'signal': '',
@@ -68,24 +66,24 @@ app.post("/search", function(req, res) {
     if(searchData !== "") {
         responseData['signal'] = 'success';
         responseData['detail']['data']['searchKeyword'] = searchData;
-        
+
+        sendData["length"] = 0;
         Object.keys(dummyData).forEach(function(key) {
             console.log(key + ": " + dummyData[key]);
-
+            
             if((key.indexOf(searchData) != dontFoundData) && (key.charAt(0) == searchData.charAt(0))) {
                 sendData[key] = dummyData[key];
+                sendData["length"] += 1;
+                console.log(sendData["length"]);
             }
         });
 
         responseData['detail']['data']['result'] = sendData;
+
+        res.json(responseData);
     } else {
         responseData['signal'] = 'fail';
         responseData['detail']['err'] = 'value is null';
     }
-
-    if(responseData.signal === 'success') {
-        console.log(responseData.signal);
-    }
-
-    res.json(responseData);
+    // res.render("index.ejs", {"data": responseData});
 });
