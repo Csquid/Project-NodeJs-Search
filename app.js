@@ -1,6 +1,17 @@
 const express = require("express");
 const app = express();
 const bodyparser = require("body-parser");
+const mysql = require("mysql");
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: '',
+    password: '1234',
+    database: 'ns_db'
+}) 
+
+connection.connect();
 
 app.listen(3000, function() {
     console.log("yes! start to 3000 port");
@@ -16,8 +27,8 @@ app.get('/', function(req, res) {
     res.render("index", {"data": {}});
 });
 
-app.post("/search", function(req, res) {
-    searchData = req.body.search;
+app.post("/suggest", function(req, res) {
+    searchKeywordData = req.body.keyword;
 
     const dummyData = {
         '가': {
@@ -63,28 +74,26 @@ app.post("/search", function(req, res) {
         }
     };
 
-    if(searchData !== "") {
+    if(searchKeywordData !== "") {
         responseData['signal'] = 'success';
-        responseData['detail']['data']['searchKeyword'] = searchData;
+        responseData['detail']['data']['searchKeyword'] = searchKeywordData;
 
         sendData["length"] = 0;
         Object.keys(dummyData).forEach(function(key) {
             // console.log(key + ": " + dummyData[key]);
             
-            if((key.indexOf(searchData) != dontFoundData) && (key.charAt(0) == searchData.charAt(0))) {
+            if((key.indexOf(searchKeywordData) != dontFoundData) && (key.charAt(0) == searchKeywordData.charAt(0))) {
                 sendData[key] = dummyData[key];
                 sendData["length"] += 1;
             }
         });
 
         responseData['detail']['data']['result'] = sendData;
-
     } else {
         responseData['signal'] = 'fail';
         responseData['detail']['err'] = 'value is null';
     }
 
-    console.log(responseData);
     res.json(responseData);
     // res.render("index.ejs", {"data": responseData});
 });

@@ -60,19 +60,25 @@ ul {
     height: 32px;
 }
 
-#search-result-box {
+#search-suggest-box {
     margin-top: -2px;
     background: #fff;
     display: none;
 }
 
-#search-result-box ul {
-    border: 1px solid black;
-    padding: 7px 0 13px;
+#search-suggest-box ul {
+    /* border: 1px solid black;
+    padding: 7px 0 13px; */
     margin: 0;
 }
 
-#search-result-box ul li {
+#search-suggest-box ul.add-box {
+    border: 1px solid yellowgreen;
+    padding: 0;
+    /* padding: 7px 0 13px; */
+}
+
+#search-suggest-box ul li {
     /* border-bottom: 1px solid silver; */
     height: 30px;
     line-height: 30px;
@@ -80,6 +86,14 @@ ul {
     text-align: left;
 }
 
-#search-result-box ul li:hover {
+#search-suggest-box ul li:first-child {
+    padding-top: 7px;
+}
+
+#search-suggest-box ul li:last-child {
+    padding-bottom: 13px;
+}
+
+#search-suggest-box ul li:hover {
     background-color: #f6f6f6;
 }
