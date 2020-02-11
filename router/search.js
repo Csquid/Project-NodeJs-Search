@@ -3,7 +3,6 @@ const app = express();
 const router = express.Router();
 const bodyparser = require("body-parser");
 const mysql = require("mysql");
-const path = require('path');
 
 const connection = mysql.createConnection({
     host: 'localhost',
