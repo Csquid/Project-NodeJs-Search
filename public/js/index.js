@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 searchResultBoxUlElement.removeChild(searchResultBoxUlElement.firstChild);
             }
             
-            sendAjax("http://localhost:3000/suggest", searchValue);
+            sendAjax("http://localhost:3000/search/suggest", searchValue);
         }
     });
 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
     function sendAjax(url, searchKeywordData) {
-        let data = {'keyword': searchKeywordData };
+        let data = {'keyword': searchKeywordData, 'status': 105 };
         let xhr = new XMLHttpRequest();
         data = JSON.stringify(data);
         
